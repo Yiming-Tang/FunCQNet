@@ -60,8 +60,8 @@ if __name__ == '__main__':
     
     
     
-    #args = parser.parse_args()             #save this in .py file
-    args = parser.parse_args(args=[])       #save this in .ipynb file
+    args = parser.parse_args()             #save this in .py file
+    #args = parser.parse_args(args=[])       #save this in .ipynb file
     
     setting = '{}_{}_{}_{}_{}'.format(
         args.model,
@@ -80,11 +80,6 @@ if __name__ == '__main__':
         else:
             args.device = torch.device("cpu")
         print('Using cpu or mps')
-    
-    args.device = torch.device("cuda:0")     # specify device
-    
-    print('Args in experiment:')
-    #print_args(args)
     
     
     df_raw = torch.load(os.path.join(args.root_path, args.data_path))
@@ -128,7 +123,6 @@ if __name__ == '__main__':
         val_loader_pred = DataLoader(val_pred,batch_size=args.batch_size, shuffle=False)
         test_loader_pred = DataLoader(test_pred,batch_size=args.batch_size, shuffle=False)
     
-        # setting record of experiments
         exp = Exp_main(args, train_loader, val_loader, test_loader, 
             train_loader_pred, val_loader_pred, test_loader_pred)  # set experiments
         setting = '{}_{}_{}_{}_{}'.format(
@@ -153,4 +147,3 @@ if __name__ == '__main__':
             torch.cuda.empty_cache()
     
     
-    print(f"Y_pred_all:{Y_pred_all[0,:]}")
