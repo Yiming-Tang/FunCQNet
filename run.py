@@ -13,6 +13,7 @@ import numpy as np
 import pandas as pd
 
 if __name__ == '__main__':
+
     fix_seed = 2025
     random.seed(fix_seed)
     torch.manual_seed(fix_seed)
@@ -22,13 +23,13 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='DFQR')   #  Deep Functional Quantile Regression with Censoring and Structured Interactions
     
     # basic config
-    parser.add_argument('--model', type=str, default='DFQRwoI',
+    parser.add_argument('--model', type=str, default='DFQR',
                         help='model name, options: [DFQR, DFQRwoI]')
     
     # data loader
-    parser.add_argument('--data', type=str, default='S3_1_c00_01_data0817', help='dataset type')
-    parser.add_argument('--root_path', type=str, default='./dataset/s3/', help='root path of the data file')
-    parser.add_argument('--data_path', type=str, default='S3_1_c00_01_data0817.pt', help='data file')
+    parser.add_argument('--data', type=str, default='S1_1_c03_01_data0817', help='dataset type')
+    parser.add_argument('--root_path', type=str, default='./dataset/s1/', help='root path of the data file')
+    parser.add_argument('--data_path', type=str, default='S1_1_c03_01_data0815_eps0.01.pt', help='data file')
     parser.add_argument('--save_path', type=str, default='./save_models/', help='location of saved models')
     parser.add_argument('--maxlen_function', type=int, default=None, help='max length of functional data')
     
@@ -81,6 +82,11 @@ if __name__ == '__main__':
             args.device = torch.device("cpu")
         print('Using cpu or mps')
     
+    args.device = torch.device("cuda:0")     # specify device
+    
+    print('Args in experiment:')
+    #print_args(args)
+    
     
     df_raw = torch.load(os.path.join(args.root_path, args.data_path))
     
@@ -123,6 +129,7 @@ if __name__ == '__main__':
         val_loader_pred = DataLoader(val_pred,batch_size=args.batch_size, shuffle=False)
         test_loader_pred = DataLoader(test_pred,batch_size=args.batch_size, shuffle=False)
     
+        # setting record of experiments
         exp = Exp_main(args, train_loader, val_loader, test_loader, 
             train_loader_pred, val_loader_pred, test_loader_pred)  # set experiments
         setting = '{}_{}_{}_{}_{}'.format(
@@ -145,5 +152,4 @@ if __name__ == '__main__':
             torch.backends.mps.empty_cache()
         elif args.gpu_type == 'cuda':
             torch.cuda.empty_cache()
-    
-    
+
