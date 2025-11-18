@@ -1,6 +1,6 @@
 import os
 import torch
-from models import DFQR, DFQRwoI, DFQR_new
+from models import DFQR, DFQRwoI, DFQR_new, DFQRadd
 
 
 class Exp_Basic(object):
@@ -9,7 +9,8 @@ class Exp_Basic(object):
         self.model_dict = {
             'DFQR': DFQR,
             'DFQRwoI': DFQRwoI,
-            'DFQR_new': DFQR_new
+            'DFQR_new': DFQR_new,
+            'DFQRadd': DFQRadd
         }
 
         self.device = self._acquire_device()
