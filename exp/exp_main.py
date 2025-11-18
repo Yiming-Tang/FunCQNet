@@ -167,4 +167,5 @@ class Exp_main(Exp_Basic):
     
             y_pred_new, beta_pred, _ = self.model(I_all, X_all, t_all, Z_all)
             y_pred_new = y_pred_new.squeeze(2).detach().cpu()
+        
         return y_pred_new
